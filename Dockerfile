@@ -1,9 +1,9 @@
 # Build stage
 FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /app
-COPY LearnOne\ 2/pom.xml ./
+COPY LearnOne_2/pom.xml ./
 RUN mvn dependency:go-offline
-COPY LearnOne\ 2 ./
+COPY LearnOne_2 .
 RUN mvn clean package -DskipTests
 
 # Runtime stage
