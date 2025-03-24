@@ -10,4 +10,4 @@ RUN mvn clean package -DskipTests
 FROM openjdk:17.0.1-jdk-slim
 COPY --from=build /app/target/LearnOne-0.0.1-SNAPSHOT.jar /LearnOne.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/LearnOne.jar"]
+ENTRYPOINT ["java", "-jar", "/LearnOne.jar"]:
