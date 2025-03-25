@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report - Ayawaso West</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f0f0;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: #008000;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .nav-link {
+            color: white !important;
+            padding: 8px 15px !important;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-link i {
+            margin-right: 5px;
+        }
+
+        .content {
+            padding: 40px 20px;
+            margin-top: 70px;
+        }
+
+        .report-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-text {
+            color: #008000;
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .filter-form {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-form input, .filter-form select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .btn-custom {
+            background: #008000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background: #006400;
+        }
+
+        .summary-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            color: #008000;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .summary-card p {
+            font-size: 1.5em;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .chart-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .chart {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            width: 100%;
+            max-width: 48%;
+            box-sizing: border-box;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .chart-title {
+            font-weight: 500;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #008000;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 991px) {
+            .chart {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-text {
+                font-size: 1.8em;
+            }
+            .report-container {
+                padding: 20px;
+            }
+            .navbar-brand {
+                font-size: 1.1em;
+            }
+            .filter-form {
+                flex-direction: column;
+                align-items: center;
+            }
+            .summary-card {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="#">
+        <img src="Images/NDC-L.png" alt="NDC Logo"> Ayawaso West
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboardView}">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/voterInput}">
+                    <i class="fas fa-users"></i> Voters
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/welfareInput}">
+                    <i class="fas fa-hand-holding-heart"></i> Welfare
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/report}">
+                    <i class="fas fa-chart-bar"></i> Reports
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="content">
+    <div class="report-container">
+        <h1 class="header-text"><i class="fas fa-chart-bar"></i> Report</h1>
+
+        <!-- Updated form to use GET -->
+        <form th:action="@{/report/filter}" method="get" class="filter-form">
+            <input type="date" name="startDate" th:value="${startDate}" placeholder="Start Date">
+            <input type="date" name="endDate" th:value="${endDate}" placeholder="End Date">
+            <input type="text" name="pollingStation" th:value="${pollingStation}" placeholder="Polling Station (optional)">
+            <button type="submit" class="btn btn-custom"><i class="fas fa-filter"></i> Filter</button>
+            <a th:href="@{/report/print(startDate=${startDate},endDate=${endDate},pollingStation=${pollingStation})}" class="btn btn-custom">
+                <i class="fas fa-print"></i> Print
+            </a>
+        </form>
+
+        <div class="summary-container">
+            <div class="summary-card">
+                <h3>Total Beneficiaries</h3>
+                <p th:text="${summaryReport.totalBeneficiaries}"></p>
+            </div>
+            <div class="summary-card">
+                <h3>Total Voters</h3>
+                <p th:text="${summaryReport.totalVoters}"></p>
+            </div>
+            <div class="summary-card">
+                <h3>Total Amount Paid</h3>
+                <p th:text="${summaryReport.totalAmountPaid}"></p>
+            </div>
+            <div class="summary-card">
+                <h3>Overdue Payments</h3>
+                <p th:text="${summaryReport.overdueCount}"></p>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart">
+                <div class="chart-title"><i class="fas fa-hand-holding-heart"></i> Beneficiaries by Ward</div>
+                <canvas id="beneficiariesBarChart"></canvas>
+            </div>
+            <div class="chart">
+                <div class="chart-title"><i class="fas fa-users"></i> Voters by Polling Station</div>
+                <canvas id="votersBarChart"></canvas>
+            </div>
+            <div class="chart">
+                <div class="chart-title"><i class="fas fa-money-bill-wave"></i> Payment Status Breakdown</div>
+                <canvas id="paymentPieChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var beneficiariesByWard = /*[[${summaryReport.beneficiariesByWard}]]*/ {};
+    var votersByPollingStation = /*[[${summaryReport.votersByPollingStation}]]*/ {};
+    var paymentStatusBreakdown = /*[[${summaryReport.paymentStatusBreakdown}]]*/ {};
+
+    // Beneficiaries by Ward Bar Chart
+    var ctxBeneficiaries = document.getElementById('beneficiariesBarChart').getContext('2d');
+    new Chart(ctxBeneficiaries, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(beneficiariesByWard),
+            datasets: [{
+                label: 'Beneficiaries',
+                data: Object.values(beneficiariesByWard),
+                backgroundColor: '#008000',
+                borderColor: '#006400',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } },
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    // Voters by Polling Station Bar Chart
+    var ctxVoters = document.getElementById('votersBarChart').getContext('2d');
+    new Chart(ctxVoters, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(votersByPollingStation),
+            datasets: [{
+                label: 'Voters',
+                data: Object.values(votersByPollingStation),
+                backgroundColor: '#008000',
+                borderColor: '#006400',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } },
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    // Payment Status Pie Chart
+    var ctxPayment = document.getElementById('paymentPieChart').getContext('2d');
+    new Chart(ctxPayment, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(paymentStatusBreakdown),
+            datasets: [{
+                data: Object.values(paymentStatusBreakdown),
+                backgroundColor: ['#008000', '#006400', '#ff6347'],
+                borderColor: ['#006400', '#004d00', '#dc143c'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+    /*]]>*/
+</script>
+</body>
+</html>
