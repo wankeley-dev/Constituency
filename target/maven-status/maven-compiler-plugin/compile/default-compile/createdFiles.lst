@@ -1,10 +1,11 @@
-com\example\Learn\LearnOne\Entity\User.class
+com\example\Learn\LearnOne\Entity\Users$Role.class
+com\example\Learn\LearnOne\SecurityConfig.class
 com\example\Learn\LearnOne\Services\WelfareService.class
 com\example\Learn\LearnOne\Entity\Voter.class
 com\example\Learn\LearnOne\HomeController.class
+com\example\Learn\LearnOne\CustomAuthenticationSuccessHandler.class
 com\example\Learn\LearnOne\Services\ReportService.class
 com\example\Learn\LearnOne\Services\VoterService.class
-com\example\Learn\LearnOne\Controllers\LoginController.class
 com\example\Learn\LearnOne\Services\DashboardViewService.class
 com\example\Learn\LearnOne\Controllers\ReportController.class
 com\example\Learn\LearnOne\Controllers\VoterViewController.class
@@ -17,6 +18,8 @@ com\example\Learn\LearnOne\Repository\UserRepository.class
 com\example\Learn\LearnOne\Controllers\DashboardViewController.class
 com\example\Learn\LearnOne\LearnOneApplication.class
 com\example\Learn\LearnOne\Repository\VoterRepository.class
+com\example\Learn\LearnOne\Controllers\AuthController.class
 com\example\Learn\LearnOne\Controllers\VoterController.class
+com\example\Learn\LearnOne\Entity\Users.class
 com\example\Learn\LearnOne\Entity\Welfare.class
 com\example\Learn\LearnOne\Controllers\WelfareController.class

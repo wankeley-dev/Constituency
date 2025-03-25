@@ -1,3 +1,4 @@
+C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Controllers\AuthController.java
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Controllers\DashboardController.java
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Controllers\DashboardViewController.java
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Controllers\LoginController.java
@@ -6,7 +7,8 @@ C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Controllers\VoterViewController.java
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Controllers\WelfareController.java
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Controllers\WelfareViewController.java
-C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Entity\User.java
+C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\CustomAuthenticationSuccessHandler.java
+C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Entity\Users.java
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Entity\Voter.java
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Entity\Welfare.java
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\HomeController.java
@@ -14,6 +16,7 @@ C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Repository\UserRepository.java
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Repository\VoterRepository.java
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Repository\WelfareRepository.java
+C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\SecurityConfig.java
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Services\DashboardService.java
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Services\DashboardViewService.java
 C:\Users\Wankeley\Desktop\constituency_mgt\LearnOne_2\src\main\java\com\example\Learn\LearnOne\Services\ReportService.java

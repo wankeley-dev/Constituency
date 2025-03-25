@@ -1,5 +1,5 @@
 package com.example.Learn.LearnOne.Controllers;
-
+/*
 import com.example.Learn.LearnOne.Entity.User;
 import com.example.Learn.LearnOne.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,3 +34,5 @@ public class LoginController {
         }
     }
 }
+
+ */

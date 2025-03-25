@@ -7,6 +7,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
+        /* Your existing CSS styles remain unchanged */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
         * {
@@ -121,6 +122,25 @@
             background: #006400;
         }
 
+        .alert {
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .register-link {
+            color: #008000;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .register-link:hover {
+            color: #006400;
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
             .login-wrapper {
                 flex-direction: column;
@@ -139,27 +159,44 @@
 <body>
 <div class="login-wrapper">
     <div class="sidebar">
-        <img th:src="@{/Images/NDC-L.png}" alt="NDC Logo" class="img-fluid">
+        <img src="Images/NDC-L.png" alt="NDC Logo" class="img-fluid">
         <h1>Welcome</h1>
         <h3>Ayawaso Wougon<br>Management System</h3>
     </div>
     <div class="login-container">
         <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+
+        <!-- Error message -->
+        <div th:if="${errorMessage}" class="alert alert-danger text-center" th:text="${errorMessage}">
+            Invalid email or password. Please try again.
+        </div>
+
         <form id="loginForm" th:action="@{/login}" method="post">
             <div class="form-group">
                 <i class="fas fa-envelope"></i>
-                <input type="email" class="form-control" id="emailtxt" name="email" placeholder="Email" required>
+                <input type="email"
+                       class="form-control"
+                       name="username"
+                id="email"
+                placeholder="Email"
+                required>
             </div>
             <div class="form-group">
                 <i class="fas fa-lock"></i>
-                <input type="password" class="form-control" id="passwordtxt" name="password" placeholder="Password" required>
+                <input type="password"
+                       class="form-control"
+                       name="password"
+                       id="password"
+                       placeholder="Password"
+                       required>
             </div>
             <button type="submit" class="btn-login">Login</button>
+            <p class="text-center mt-3">
+                Don't have an account?
+                <a th:href="@{/register}" class="register-link">Register</a>
+            </p>
         </form>
     </div>
 </div>
 </body>
 </html>
-
-
-
