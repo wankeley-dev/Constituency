@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     @GetMapping("/")
     public String home() {
-        return "redirect:/login";  // Or redirect to another page like "/dashboard"
+        return "redirect:/login";  // Or redirect to another page likedfgf "/dashboard"
     }
 }
