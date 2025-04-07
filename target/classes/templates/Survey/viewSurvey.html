@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View Surveys - Ayawaso West</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+        * { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f0f0f0; min-height: 100vh; padding-bottom: 50px; }
+        .navbar { background: #008000; padding: 15px 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        .navbar-brand { display: flex; align-items: center; color: white; font-weight: 600; font-size: 1.5em; }
+        .navbar-brand img { width: 50px; height: 50px; margin-right: 10px; }
+        .nav-link { color: white !important; padding: 10px 15px !important; border-radius: 5px; transition: background 0.3s ease; font-size: 1.1em; }
+        .nav-link:hover { background: rgba(255, 255, 255, 0.2); }
+        .nav-link i { margin-right: 8px; }
+        .container { width: 90%; max-width: 1100px; margin: 80px auto 40px; padding: 20px; }
+        .header-title { font-weight: 600; color: #008000; font-size: 2.5em; text-align: center; margin-bottom: 30px; }
+        .survey-card { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; overflow: hidden; cursor: pointer; }
+        .survey-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
+        .survey-card::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: #008000; transition: width 0.3s ease; }
+        .survey-card:hover::before { width: 10px; }
+        h5 { color: #333; font-size: 1.3em; }
+        .text-muted { color: #666 !important; }
+        .badge { font-size: 0.9em; padding: 5px 10px; border-radius: 20px; font-weight: 600; }
+        .bg-draft { background: #f39c12; }
+        .bg-active { background: #008000; }
+        .bg-closed { background: #7f8c8d; }
+        .bg-secondary { background: #006400; }
+        .bg-info { background: #00cc00; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        .survey-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; }
+        .survey-meta-item { display: flex; align-items: center; margin-right: 15px; }
+        .survey-meta-item i { margin-right: 5px; color: #666; }
+        .survey-meta-label { margin-right: 5px; color: #666; font-size: 0.9em; }
+        .survey-description { margin: 10px 0 15px; line-height: 1.5; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @media (max-width: 991px) { .navbar-nav { text-align: center; padding-top: 10px; } .nav-link { padding: 12px 15px !important; font-size: 1.2em; } }
+        @media (max-width: 768px) { .container { margin-top: 70px; padding: 15px; } .header-title { font-size: 2em; } .navbar-brand { font-size: 1.3em; } .navbar-brand img { width: 40px; height: 40px; } .survey-card { padding: 15px; } }
+        @media (max-width: 576px) { .navbar { padding: 10px 15px; } .navbar-brand { font-size: 1.2em; } .navbar-brand img { width: 35px; height: 35px; } .nav-link { font-size: 1.1em; padding: 10px 12px !important; } .header-title { font-size: 1.8em; } .survey-meta-item { margin-right: 10px; margin-bottom: 5px; } }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" th:href="@{/user-dashboard}">
+    <img src="/Images/NDC-L.png" alt="NDC Logo"> Ayawaso West
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/issues}">
+          <i class="fas fa-bullhorn"></i> Report Community Issue
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/surveys/viewSurvey}">
+          <i class="fas fa-poll"></i> Surveys
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/events/viewEvent}">
+          <i class="fas fa-calendar-check"></i> Events
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <h2 class="header-title fade-in">Available Surveys</h2>
+  <div class="row">
+    <div class="col">
+      <div th:each="survey : ${surveys}" class="survey-card fade-in"
+           th:onclick="|window.location.href='@{/survey-responses/submit/{surveyId}(surveyId=${survey.id})}'|">
+        <div>
+          <h5><i class="fas fa-poll me-2"></i><span th:text="${survey.title}">Survey Title</span></h5>
+          <p class="survey-description text-muted" th:text="${survey.description ?: 'No description provided'}">Survey description goes here</p>
+
+          <div class="survey-meta">
+            <div class="survey-meta-item">
+              <span class="badge"
+                    th:classappend="${survey.status == 'DRAFT' ? 'bg-draft' :
+                                    survey.status == 'ACTIVE' ? 'bg-active' : 'bg-closed'}"
+                    th:text="${survey.status}"></span>
+            </div>
+
+            <div class="survey-meta-item">
+              <i class="fas fa-calendar-day"></i>
+              <span class="survey-meta-label">Start:</span>
+              <span class="badge bg-secondary" th:text="${#temporals.format(survey.startDate, 'MMM dd, yyyy HH:mm')}">Start Date</span>
+            </div>
+
+            <div class="survey-meta-item">
+              <i class="fas fa-calendar-day"></i>
+              <span class="survey-meta-label">End:</span>
+              <span class="badge bg-info" th:text="${survey.endDate != null ? #temporals.format(survey.endDate, 'MMM dd, yyyy HH:mm') : 'No end date'}">End Date</span>
+            </div>
+            <div class="survey-meta-item">
+              <i class="fas fa-question-circle"></i>
+              <span class="survey-meta-label">Questions:</span>
+              <span th:text="${survey.questions.size()}">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

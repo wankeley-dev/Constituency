@@ -6,11 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+
 public class AuthController {
 
     private final UserService userService;
@@ -20,6 +20,7 @@ public class AuthController {
         this.userService = userService;
     }
 
+
     // Registration Endpoints
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -28,22 +29,22 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute Users user, Model model) {
-      logger.info("Registration attempt - User data:");
-    logger.info("Full Name: " + user.getFullName());
+    public String registerUser(@ModelAttribute Users user, RedirectAttributes redirectAttributes) {
+        logger.info("Registration attempt - User data:");
+        logger.info("Full Name: " + user.getFullName());
         logger.info("Email: " + user.getEmail());
-       logger.info("Password: " + (user.getPassword() != null ? "*****" : "NULL"));
+        logger.info("Password: " + (user.getPassword() != null ? "*****" : "NULL"));
         logger.info("Role: " + user.getRole());
 
         try {
             userService.registerUser(user);
-            return "redirect:/login?success";
+            redirectAttributes.addFlashAttribute("successMessage", "Registration successful. Please login.");
+            return "redirect:/login";
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "Registration failed: " + e.getMessage());
-            return "register";
+            redirectAttributes.addFlashAttribute("errorMessage", "Registration failed: " + e.getMessage());
+            return "redirect:/register";
         }
     }
-
 
     // Login Endpoints
     @GetMapping("/login")
@@ -52,21 +53,5 @@ public class AuthController {
         return "login";
     }
 
-    /*
-    @PostMapping("/login")
-    public String login(@RequestParam String email,
-                        @RequestParam String password,
-                        Model model) {
-        Optional<User> optionalUser = userService.authenticate(email, password);
-        if (optionalUser.isPresent()) {
-            // Redirect to the dashboard if successful
-            return "redirect:/dashboard"; // Update with your actual dashboard URL
-        } else {
-            // Show error message if unsuccessful
-            model.addAttribute("errorMessage", "Invalid email or password. Please try again.");
-            return "login"; // Return to login page with error
-        }
-    }
 
-     */
 }

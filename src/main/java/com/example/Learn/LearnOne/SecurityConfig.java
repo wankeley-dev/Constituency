@@ -31,13 +31,19 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/register", "/css/**", "/js/**", "/Images/**").permitAll()
-                        .requestMatchers("/dashboard").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/dashboardView").hasRole("ADMIN")
+                        .requestMatchers("/admin-dashboard").hasRole("ADMIN")
+                        .requestMatchers("/welfare-dashboard").hasRole("WELFARE_OFFICER")
+                        .requestMatchers("/leader-dashboard").hasRole("COMMUNITY_LEADER")
+                        .requestMatchers("/constituent-dashboard").hasRole("CONSTITUENT")
+                        .requestMatchers("/dashboard").hasAnyRole("USER", "ADMIN", "WELFARE_OFFICER", "COMMUNITY_LEADER", "CONSTITUENT")
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
+                .formLogin(login -> login
                         .loginPage("/login")
-                        .successHandler(customAuthenticationSuccessHandler)
+                        .loginProcessingUrl("/perform_login")
+                        .usernameParameter("email")
+                        .successHandler(customAuthenticationSuccessHandler) // Use custom handler
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -55,7 +61,7 @@ public class SecurityConfig {
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
                         .password(user.getPassword())
-                        .roles(user.getRole().name())
+                        .roles(user.getRole().name()) // Assigns proper role dynamically
                         .build()
                 )
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));

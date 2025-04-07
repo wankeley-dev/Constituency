@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welfare List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f0f0;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        .navbar {
+            background: #008000;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.5em;
+        }
+
+        .navbar-brand img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .nav-link {
+            color: white !important;
+            padding: 10px 15px !important;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            font-size: 1.1em;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-link i {
+            margin-right: 8px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 80px auto 40px;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #008000;
+            font-size: 2.5em;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background: white;
+        }
+
+        .card-header {
+            background: #008000;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #008000;
+            box-shadow: 0 0 5px rgba(0, 128, 0, 0.5);
+        }
+
+        .btn-primary {
+            background: #008000;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: #006400;
+            transform: scale(1.05);
+        }
+
+        .welfare-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welfare-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .voter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: #008000;
+            transition: width 0.3s ease;
+        }
+
+        .welfare-card:hover::before {
+            width: 10px;
+        }
+
+        h5 {
+            color: #333;
+            font-size: 1.3em;
+        }
+
+        .text-muted {
+            color: #666 !important;
+        }
+
+        .badge {
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .bg-active {
+            background: #008000;
+        }
+
+        .bg-inactive {
+            background: #dc3545;
+        }
+
+        .bg-secondary {
+            background: #006400 !important;
+        }
+
+        .bg-info {
+            background: #008000 !important;
+        }
+
+        .btn-action {
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: transform 0.2s ease, background 0.3s ease;
+        }
+
+        .btn-action:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-success {
+            background: #008000;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background: #006400;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .login-link {
+            color: #008000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link:hover {
+            color: #006400;
+            text-decoration: underline;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 991px) {
+            .navbar-nav {
+                text-align: center;
+                padding-top: 10px;
+            }
+            .nav-link {
+                padding: 12px 15px !important;
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 70px;
+                padding: 15px;
+            }
+            h2 {
+                font-size: 2em;
+            }
+            .navbar-brand {
+                font-size: 1.3em;
+            }
+            .navbar-brand img {
+                width: 40px;
+                height: 40px;
+            }
+            .welfare-card {
+                padding: 15px;
+            }
+            .btn-action {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar {
+                padding: 10px 15px;
+            }
+            .navbar-brand {
+                font-size: 1.2em;
+            }
+            .navbar-brand img {
+                width: 35px;
+                height: 35px;
+            }
+            .nav-link {
+                font-size: 1.1em;
+                padding: 10px 12px !important;
+            }
+            h2 {
+                font-size: 1.8em;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" th:href="@{/admin-dashboard}">
+        <img src="Images/NDC-L.png" alt="NDC Logo"> Ayawaso West
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/users}">
+                    <i class="fas fa-user-friends"></i> Users
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/voterInput/view}">
+                    <i class="fas fa-users"></i> Voters
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/welfareInput/view}">
+                    <i class="fas fa-hand-holding-heart"></i> Welfare
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/events}">
+                    <i class="fas fa-calendar-check"></i> Events
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/surveys}">
+                    <i class="fas fa-poll"></i> Survey
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/participation/view}">
+                    <i class="fas fa-user-check"></i> Participation
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/survey-responses}">
+                    <i class="fas fa-chart-pie"></i> Survey Responses
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h2 class="text-center fade-in">Welfare List</h2>
+
+    <!-- Filter Section -->
+    <div class="card mb-5 fade-in">
+        <div class="card-header">
+            <i class="fas fa-filter me-2"></i>Filter Welfare Records
+        </div>
+        <div class="card-body p-4">
+            <form action="/welfareInput/view" method="get">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <input type="text" name="ward" class="form-control" placeholder="Ward" th:value="${ward}">
+                    </div>
+                    <div class="col-md-3">
+                        <select name="paymentStatus" class="form-select">
+                            <option value="">All Statuses</option>
+                            <option value="Pending" th:selected="${paymentStatus == 'Pending'}">Pending</option>
+                            <option value="Paid" th:selected="${paymentStatus == 'Paid'}">Paid</option>
+                            <option value="Overdue" th:selected="${paymentStatus == 'Overdue'}">Overdue</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="category" class="form-select">
+                            <option value="">All Categories</option>
+                            <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}" th:selected="${cat == category}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" name="startDate" class="form-control" th:value="${startDate}">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" name="endDate" class="form-control" th:value="${endDate}">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search me-2"></i>Filter
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Welfare Records Section -->
+    <h4 class="mb-4 fade-in"><i class="fas fa-hand-holding-heart me-2"></i>Welfare Records</h4>
+    <div class="row">
+        <div class="col">
+            <div th:each="welfare : ${welfares}" class="welfare-card fade-in">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="me-3">
+                        <h5><i class="fas fa-user me-2"></i><span th:text="${welfare.name}"></span></h5>
+                        <p class="text-muted mb-2"><strong>Voter ID:</strong> <span th:text="${welfare.voter.voterId}"></span></p>
+                        <div>
+                            <span class="badge me-2" th:classappend="${welfare.paymentStatus == 'Pending' ? 'bg-pending' : welfare.paymentStatus == 'Paid' ? 'bg-paid' : 'bg-overdue'}" th:text="${welfare.paymentStatus}"></span>
+                            <span class="badge bg-secondary" th:text="${welfare.ward}"></span>
+                            <span class="badge bg-info ms-2" th:text="${welfare.category}"></span>
+                        </div>
+                        <small class="text-muted d-block mt-2">
+                            <i class="fas fa-money-bill-wave me-1"></i><span th:text="${welfare.amountPaid}"></span> |
+                            <i class="fas fa-calendar-alt me-1"></i><span th:text="${#temporals.format(welfare.startDate, 'MMM dd, yyyy')}"></span>
+                        </small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <a class="btn btn-success btn-action me-2" th:href="@{'/welfareInput/edit/' + ${welfare.id}}"><i class="fas fa-edit"></i> Edit</a>
+                        <a class="btn btn-info btn-action me-2" th:href="@{'/welfareInput/history/' + ${welfare.id}}"><i class="fas fa-history"></i> History</a>
+                        <a class="btn btn-danger btn-action" th:href="@{'/welfareInput/delete/' + ${welfare.id}}" onclick="return confirm('Are you sure you want to delete this welfare record?');"><i class="fas fa-trash"></i> Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="text-center mt-3"><a th:href="@{/welfareInput/WelfareInput}" class="login-link">Add Welfare</a></p>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

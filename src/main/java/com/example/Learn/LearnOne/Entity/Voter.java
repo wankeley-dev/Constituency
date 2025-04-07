@@ -1,32 +1,45 @@
 package com.example.Learn.LearnOne.Entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 public class Voter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id") // Nullable by default; set to false if every Voter must have a User
+    private Users user;
+
     @NotBlank(message = "Full name is required")
-    @Size(max = 100, message = "Full name must not exceed 100 characters")
-    private String fullName;
+    private String fullName; // Separate field for voter's name
 
     @NotBlank(message = "Voter ID is required")
     @Size(min = 10, max = 10, message = "Voter ID must be exactly 10 characters")
+    @Column(unique = true)
     private String voterId;
 
     @Positive(message = "Age must be positive")
     private int age;
 
     private String occupation;
+
+    @Enumerated(EnumType.STRING)
+    private EmploymentStatus employmentStatus;
+
+    public enum EmploymentStatus {
+        EMPLOYED, UNEMPLOYED, RETIRED, STUDENT
+    }
 
     @NotBlank(message = "Branch is required")
     private String branch;
@@ -45,45 +58,12 @@ public class Voter {
     @NotBlank(message = "Polling station is required")
     private String pollingStation;
 
-    private boolean active = true; // Default to active voter
+    private boolean active = true;
+
+    private Boolean registeredOffline;
+
+    private LocalDateTime syncTimestamp;
 
     @OneToMany(mappedBy = "voter")
     private List<Welfare> welfares;
-
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
-
-    public String getVoterId() { return voterId; }
-    public void setVoterId(String voterId) { this.voterId = voterId; }
-
-    public int getAge() { return age; }
-    public void setAge(int age) { this.age = age; }
-
-    public String getOccupation() { return occupation; }
-    public void setOccupation(String occupation) { this.occupation = occupation; }
-
-    public String getBranch() { return branch; }
-    public void setBranch(String branch) { this.branch = branch; }
-
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
-
-    public String getGender() { return gender; }
-    public void setGender(String gender) { this.gender = gender; }
-
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
-
-    public LocalDate getRegistrationDate() { return registrationDate; }
-    public void setRegistrationDate(LocalDate registrationDate) { this.registrationDate = registrationDate; }
-
-    public String getPollingStation() { return pollingStation; }
-    public void setPollingStation(String pollingStation) { this.pollingStation = pollingStation; }
-
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
 }

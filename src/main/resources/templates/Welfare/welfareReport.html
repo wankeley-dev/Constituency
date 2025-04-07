@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welfare Reports</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%); font-family: 'Poppins', sans-serif; min-height: 100vh; padding-bottom: 50px; }
+        .container { max-width: 1100px; margin-top: 30px; }
+        .card { border: none; border-radius: 15px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); background: #fff; }
+        .card-header { background: #e74c3c; color: white; font-weight: 600; padding: 15px; border-radius: 15px 15px 0 0; }
+        .form-control { border-radius: 8px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); }
+        .form-control:focus { border-color: #e74c3c; box-shadow: 0 0 5px rgba(231, 76, 60, 0.5); }
+        .btn-primary { background: #e74c3c; border: none; border-radius: 8px; padding: 10px 20px; }
+        .btn-primary:hover { background: #c0392b; transform: scale(1.05); }
+        .canvas-container { max-width: 600px; margin: 0 auto; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="text-center fade-in">Welfare Distribution Reports</h2>
+
+    <!-- Date Range Filter -->
+    <div class="card mb-5 fade-in">
+        <div class="card-header">
+            <i class="fas fa-calendar-alt me-2"></i>Select Date Range for Ward Report
+        </div>
+        <div class="card-body p-4">
+            <form action="/welfareInput/report" method="get">
+                <div class="row g-3">
+                    <div class="col-md-5">
+                        <label for="startDate" class="form-label">Start Date:</label>
+                        <input type="date" id="startDate" name="startDate" class="form-control" th:value="${wardReport.startDate}">
+                    </div>
+                    <div class="col-md-5">
+                        <label for="endDate" class="form-label">End Date:</label>
+                        <input type="date" id="endDate" name="endDate" class="form-control" th:value="${wardReport.endDate}">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search me-2"></i>Generate</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Category Distribution Report -->
+    <div class="card mb-5 fade-in">
+        <div class="card-header">
+            <i class="fas fa-chart-pie me-2"></i>Category Distribution
+        </div>
+        <div class="card-body p-4">
+            <div class="canvas-container">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ward Distribution Report -->
+    <div class="card mb-5 fade-in">
+        <div class="card-header">
+            <i class="fas fa-chart-bar me-2"></i>Ward Distribution (<span th:text="${#temporals.format(wardReport.startDate, 'MMM dd, yyyy')} + ' - ' + ${#temporals.format(wardReport.endDate, 'MMM dd, yyyy')}"></span>)
+        </div>
+        <div class="card-body p-4">
+            <div class="canvas-container">
+                <canvas id="wardChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Category Chart
+    const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+    new Chart(categoryCtx, {
+        type: 'pie',
+        data: {
+            labels: /*[[${categoryReport.categories}]]*/,
+            datasets: [{
+                label: 'Count',
+                data: /*[[${categoryReport.counts}]]*/,
+                backgroundColor: ['#e74c3c', '#f39c12', '#2ecc71', '#3498db'],
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: true, text: 'Welfare by Category' }
+            }
+        }
+    });
+
+    // Ward Chart
+    const wardCtx = document.getElementById('wardChart').getContext('2d');
+    new Chart(wardCtx, {
+        type: 'bar',
+        data: {
+            labels: /*[[${wardReport.wards}]]*/,
+            datasets: [
+                { label: 'Count', data: /*[[${wardReport.counts}]]*/, backgroundColor: '#e74c3c' },
+                { label: 'Total Amount', data: /*[[${wardReport.totals}]]*/, backgroundColor: '#f39c12' }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } },
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: true, text: 'Welfare by Ward' }
+            }
+        }
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
