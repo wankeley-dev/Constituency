@@ -31,7 +31,7 @@ public class SurveyController {
             model.addAttribute("survey", new Survey()); // For the create form
             model.addAttribute("question", new SurveyQuestion()); // For the add question form
             model.addAttribute("statuses", Survey.SurveyStatus.values());
-            return "/Survey/surveys"; // Adjust path if needed (e.g., "surveys" if in templates root)
+            return "Survey/surveys"; // Adjust path if needed (e.g., "surveys" if in templates root)
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Failed to load surveys: " + e.getMessage());
@@ -91,6 +91,6 @@ public class SurveyController {
     @GetMapping("/viewSurvey")
     public String viewSurveys(Model model) {
         model.addAttribute("surveys", surveyService.getAllSurveys());
-        return "/Survey/viewSurvey";
+        return "Survey/viewSurvey";
     }
 }
