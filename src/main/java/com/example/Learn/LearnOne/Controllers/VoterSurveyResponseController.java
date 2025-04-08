@@ -48,7 +48,7 @@ public class VoterSurveyResponseController {
             model.addAttribute("surveys", surveyService.getAllSurveys());
             model.addAttribute("surveyId", surveyId);
             model.addAttribute("voterId", voterId);
-            return "/Survey/survey-responses";
+            return "Survey/survey-responses";
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Failed to load responses: " + e.getMessage());
@@ -70,7 +70,7 @@ public class VoterSurveyResponseController {
             }
 
             model.addAttribute("survey", survey);
-            return "/Survey/submit-survey-response";
+            return "Survey/submit-survey-response";
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Failed to load survey: " + e.getMessage());
