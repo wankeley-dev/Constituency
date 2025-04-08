@@ -19,6 +19,6 @@ public class UserDashboard {
             model.addAttribute("user", new Users()); // Default empty user
             model.addAttribute("error", "User not found. Please log in again.");
         }
-        return "/Dashboard/userDashboard";
+        return "Dashboard/userDashboard";
     }
 }
