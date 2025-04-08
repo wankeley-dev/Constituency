@@ -88,6 +88,6 @@ public class AdminDashboard {
         }
 
         logger.info("Returning admin-dashboard view");
-        return "/Dashboard/admin-dashboard";
+        return "Dashboard/admin-dashboard";
     }
 }
