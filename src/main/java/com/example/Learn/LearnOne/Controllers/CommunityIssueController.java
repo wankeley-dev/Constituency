@@ -37,7 +37,7 @@ public class CommunityIssueController {
         model.addAttribute("priorities", CommunityIssue.IssuePriority.values());
         model.addAttribute("statuses", CommunityIssue.IssueStatus.values());
 
-        return "/CommunityIssue/community-issues";
+        return "CommunityIssue/community-issues";
     }
 
     @PostMapping("/submit")
@@ -56,7 +56,7 @@ public class CommunityIssueController {
         model.addAttribute("categories", CommunityIssue.IssueCategory.values());
         model.addAttribute("priorities", CommunityIssue.IssuePriority.values());
         model.addAttribute("statuses", CommunityIssue.IssueStatus.values());
-        return "/CommunityIssue/community-issues";
+        return "CommunityIssue/community-issues";
     }
 
     @PostMapping("/update/{issueId}")
