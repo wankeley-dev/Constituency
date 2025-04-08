@@ -35,7 +35,7 @@ public class VoterParticipationController {
         model.addAttribute("voters", voterService.findAllVoters());
         model.addAttribute("events", eventService.findAllEvents());
         model.addAttribute("statuses", VoterEventParticipation.ParticipationStatus.values());
-        return "/Events/participationInput";
+        return "Events/participationInput";
     }
 
     @PostMapping("/save")
@@ -71,7 +71,7 @@ public class VoterParticipationController {
         model.addAttribute("status", status);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
-        return "/Events/participationView";
+        return "Events/participationView";
     }
 
     @GetMapping("/edit/{id}")
@@ -82,7 +82,7 @@ public class VoterParticipationController {
             model.addAttribute("voters", voterService.findAllVoters());
             model.addAttribute("events", eventService.findAllEvents());
             model.addAttribute("statuses", VoterEventParticipation.ParticipationStatus.values());
-            return "/Voter/participationInput";
+            return "Voter/participationInput";
         } else {
             redirectAttributes.addFlashAttribute("message", "Participation record not found!");
             return "redirect:/participation/view";
@@ -109,6 +109,6 @@ public class VoterParticipationController {
         Map<String, Object> report = participationService.generateParticipationReport();
         model.addAttribute("report", report);
         model.addAttribute("events", eventService.findAllEvents());
-        return "/Events/participationReport";
+        return "Events/participationReport";
     }
 }
