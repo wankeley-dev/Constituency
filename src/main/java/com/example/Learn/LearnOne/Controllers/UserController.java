@@ -43,7 +43,7 @@ public class UserController {
         model.addAttribute("volunteer", volunteer); // Updated attribute name
         model.addAttribute("welfareBeneficiary", welfareBeneficiary); // Updated attribute name
         model.addAttribute("keyword", keyword);
-        return "/Users/users";
+        return "Users/users";
     }
 
     @GetMapping("/edit/{id}")
