@@ -26,7 +26,7 @@ public class ReportController {
         model.addAttribute("startDate", LocalDate.now().minusYears(1));
         model.addAttribute("endDate", LocalDate.now());
         model.addAttribute("ward", "");
-        return "/Report/report";
+        return "Report/report";
     }
 
     @PostMapping("/report/filter")
@@ -42,7 +42,7 @@ public class ReportController {
         model.addAttribute("startDate", start);
         model.addAttribute("endDate", end);
         model.addAttribute("ward", ward != null ? ward : "");
-        return "/Report/report";
+        return "Report/report";
     }
 
     @GetMapping("/report/print")
@@ -53,7 +53,7 @@ public class ReportController {
         model.addAttribute("summaryReport", summaryReport);
         model.addAttribute("startDate", LocalDate.now().minusYears(1));
         model.addAttribute("endDate", LocalDate.now());
-        return "/Report/reportPrint";
+        return "Report/reportPrint";
     }
 
     @PostMapping("/report/print/filter")
@@ -69,7 +69,7 @@ public class ReportController {
         model.addAttribute("startDate", start);
         model.addAttribute("endDate", end);
         model.addAttribute("ward", ward != null ? ward : "");
-        return "/Report/reportPrint";
+        return "Report/reportPrint";
     }
 
     @GetMapping("/report/filter")
@@ -84,6 +84,6 @@ public class ReportController {
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("pollingStation", pollingStation);
-        return "/Report/report"; // Ensure this matches your Thymeleaf template name
+        return "Report/report"; // Ensure this matches your Thymeleaf template name
     }
 }
