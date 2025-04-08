@@ -33,7 +33,7 @@ public class EventController {
         model.addAttribute("eventDate", eventDate);
         model.addAttribute("keyword", keyword);
         model.addAttribute("status", Event.EventStatus.values());
-        return "/Events/events";
+        return "Events/events";
     }
 
     @PostMapping("/add")
@@ -51,6 +51,6 @@ public class EventController {
     @GetMapping("/viewEvent")
     public String viewEvents(Model model) {
         model.addAttribute("events", eventService.findAllEvents());
-        return "/Events/viewEvent";
+        return "Events/viewEvent";
     }
 }
