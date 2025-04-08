@@ -35,7 +35,7 @@ public class VoterController {
     public String showVoterForm(Model model) {
         model.addAttribute("voter", new Voter());
         model.addAttribute("employmentStatus", Voter.EmploymentStatus.values());
-        return "/Voter/voterInput"; // No need to pass users list unless you want to optionally link
+        return "Voter/voterInput"; // No need to pass users list unless you want to optionally link
     }
 
     @PostMapping("/save")
@@ -46,7 +46,7 @@ public class VoterController {
         if (result.hasErrors()) {
             model.addAttribute("employmentStatus", Voter.EmploymentStatus.values());
             logger.info("Error from employment status");
-            return "/Voter/voterInput";
+            return "Voter/voterInput";
         }
 
          */
@@ -54,7 +54,7 @@ public class VoterController {
         if (voterService.getVoter(voter.getVoterId()).isPresent() && voter.getId() == null) {
             result.rejectValue("voterId", "error.voterId", "Voter ID already exists.");
             model.addAttribute("employmentStatus", Voter.EmploymentStatus.values());
-            return "/Voter/voterInput";
+            return "Voter/voterInput";
         }
 
         voterService.saveVoter(voter);
@@ -76,7 +76,7 @@ public class VoterController {
         model.addAttribute("pollingStation", pollingStation);
         model.addAttribute("active", active);
         model.addAttribute("keyword", keyword);
-        return "/Voter/voterView";
+        return "Voter/voterView";
     }
 
     @GetMapping("/edit/{id}")
@@ -85,7 +85,7 @@ public class VoterController {
         if (voter.isPresent()) {
             model.addAttribute("voter", voter.get());
             model.addAttribute("users", userService.findAllUsers());
-            return "/Voter/voterInput";
+            return "Voter/voterInput";
         } else {
             redirectAttributes.addFlashAttribute("message", "Voter not found!");
             return "redirect:/voterInput/view";
@@ -98,7 +98,7 @@ public class VoterController {
         if (voter.isPresent()) {
             model.addAttribute("voter", voter.get());
             logger.info("Voter details found and added");
-            return "/Voter/voterDetails";
+            return "Voter/voterDetails";
         } else {
             redirectAttributes.addFlashAttribute("error", "Voter not found!");
             return "redirect:/voterInput/view";
@@ -110,7 +110,7 @@ public class VoterController {
                               RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("users", userService.findAllUsers());
-            return "/Voter/voterInput";
+            return "Voter/voterInput";
         }
         voterService.updateVoter(voter);
         redirectAttributes.addFlashAttribute("message", "Voter information updated successfully!");
@@ -131,7 +131,7 @@ public class VoterController {
         Optional<Voter> voter = voterService.getVoterByUser(user);
         if (voter.isPresent()) {
             model.addAttribute("voter", voter.get());
-            return "/Voter/voterDetail";
+            return "Voter/voterDetail";
         } else {
             redirectAttributes.addFlashAttribute("message", "Voter not found for the given user.");
             return "redirect:/voterInput/view";
