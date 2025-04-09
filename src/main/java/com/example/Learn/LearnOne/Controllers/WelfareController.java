@@ -33,7 +33,7 @@ public class WelfareController {
         model.addAttribute("welfare", new Welfare());
         model.addAttribute("categories", Welfare.BeneficiaryCategory.values());
         model.addAttribute("voters", voterService.findAllVoters());
-        return "/Welfare/welfareInput";
+        return "Welfare/welfareInput";
     }
 
     @PostMapping("/save")
@@ -42,7 +42,7 @@ public class WelfareController {
         if (result.hasErrors()) {
             model.addAttribute("categories", Welfare.BeneficiaryCategory.values());
             model.addAttribute("voters", voterService.findAllVoters());
-            return "/Welfare/welfareInput";
+            return "Welfare/welfareInput";
         }
         Voter voter = voterService.getVoterById(welfare.getVoter().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Voter not found"));
@@ -69,7 +69,7 @@ public class WelfareController {
         model.addAttribute("category", category);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
-        return "/Welfare/welfareView";
+        return "Welfare/welfareView";
     }
 
     @GetMapping("/edit/{id}")
@@ -79,7 +79,7 @@ public class WelfareController {
             model.addAttribute("welfare", welfare.get());
             model.addAttribute("categories", Welfare.BeneficiaryCategory.values());
             model.addAttribute("voters", voterService.findAllVoters());
-            return "/Welfare/welfareInput";
+            return "Welfare/welfareInput";
         } else {
             redirectAttributes.addFlashAttribute("message", "Welfare record not found!");
             return "redirect:/welfareInput/view";
@@ -92,7 +92,7 @@ public class WelfareController {
         if (result.hasErrors()) {
             model.addAttribute("categories", Welfare.BeneficiaryCategory.values());
             model.addAttribute("voters", voterService.findAllVoters());
-            return "/Welfare/welfareInput";
+            return "Welfare/welfareInput";
         }
         Voter voter = voterService.getVoterById(welfare.getVoter().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Voter not found"));
@@ -115,7 +115,7 @@ public class WelfareController {
         if (welfare.isPresent()) {
             model.addAttribute("welfare", welfare.get());
             model.addAttribute("assistance", new WelfareAssistance());
-            return "/Welfare/welfareHistory";
+            return "Welfare/welfareHistory";
         } else {
             redirectAttributes.addFlashAttribute("message", "Welfare record not found!");
             return "redirect:/welfareInput/view";
@@ -140,6 +140,6 @@ public class WelfareController {
         Map<String, Object> wardReport = welfareService.generateWardReport(start, end);
         model.addAttribute("categoryReport", categoryReport);
         model.addAttribute("wardReport", wardReport);
-        return "/Welfare/welfareReport";
+        return "Welfare/welfareReport";
     }
 }
