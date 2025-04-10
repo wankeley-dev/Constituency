@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Participation Report - Ayawaso West</title>
+    <title>Admin Dashboard - Ayawaso West</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -67,12 +67,12 @@
 
         .container {
             width: 95%;
-            max-width: 1100px;
+            max-width: 1400px;
             margin: 60px auto 20px;
             padding: 15px;
         }
 
-        .header-title {
+        h2 {
             font-weight: 600;
             color: #008000;
             font-size: 1.8rem;
@@ -80,14 +80,18 @@
             margin-bottom: 20px;
         }
 
+        h2 i {
+            margin-right: 8px;
+        }
+
         .card {
             border: none;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             background: white;
-            overflow: hidden;
             margin-bottom: 15px;
             transition: transform 0.2s ease;
+            height: 100%;
         }
 
         .card:hover {
@@ -100,6 +104,11 @@
             font-weight: 600;
             padding: 12px;
             border-radius: 8px 8px 0 0;
+            font-size: 0.95rem;
+        }
+
+        .card-header i {
+            margin-right: 6px;
         }
 
         .card-body {
@@ -107,8 +116,70 @@
         }
 
         .canvas-container {
-            max-width: 600px;
-            margin: 0 auto;
+            width: 100%;
+            height: 200px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+
+        .stat-card i {
+            font-size: 1.8rem;
+            color: #008000;
+        }
+
+        .stat-card h3 {
+            margin: 8px 0;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.4rem;
+        }
+
+        .stat-card p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .constituency-map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .constituency-map path {
+            fill: #bdc3c7;
+            stroke: #006400;
+            stroke-width: 1;
+            transition: fill 0.3s;
+        }
+
+        .constituency-map path:hover {
+            fill: #008000;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 8px;
+            border-radius: 4px;
+            pointer-events: none;
+            display: none;
+            font-size: 0.75rem;
+            z-index: 100;
         }
 
         .fade-in {
@@ -135,9 +206,11 @@
         @media (min-width: 768px) {
             .navbar { padding: 15px 20px; }
             .container { margin-top: 80px; padding: 20px; }
-            .header-title { font-size: 2.5rem; }
-            .card-header { padding: 15px; }
+            h2 { font-size: 2.5rem; }
+            .card-header { padding: 15px; font-size: 1rem; }
             .card-body { padding: 20px; }
+            .stat-card { padding: 20px; }
+            .stat-card h3 { font-size: 1.5rem; }
         }
 
         @media (max-width: 991px) {
@@ -155,20 +228,28 @@
         @media (max-width: 768px) {
             .navbar-brand { font-size: 1.2rem; }
             .navbar-brand img { width: 35px; height: 35px; }
-            .header-title { font-size: 1.5rem; margin-bottom: 15px; }
-            .canvas-container { max-width: 100%; }
+            h2 { font-size: 1.5rem; margin-bottom: 15px; }
+            .stat-card { padding: 12px; }
+            .stat-card i { font-size: 1.5rem; }
+            .stat-card h3 { font-size: 1.2rem; }
+            .canvas-container { height: 180px; }
+            .map-container { height: 250px; }
         }
 
         @media (max-width: 576px) {
             .navbar { padding: 8px 12px; }
             .nav-link { font-size: 0.9rem; padding: 6px 10px !important; }
-            .header-title { font-size: 1.3rem; }
+            h2 { font-size: 1.3rem; }
+            .canvas-container { height: 160px; }
+            .map-container { height: 200px; }
+            .tooltip { font-size: 0.7rem; }
         }
 
         @media (max-width: 400px) {
             .navbar-brand { font-size: 1.1rem; }
             .navbar-brand img { width: 30px; height: 30px; }
-            .header-title { font-size: 1.2rem; }
+            h2 { font-size: 1.2rem; }
+            .stat-card h3 { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -199,6 +280,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" th:href="@{/issues/viewIssues}">
+                    <i class="fas fa-bullhorn"></i> Issues
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" th:href="@{/events}">
                     <i class="fas fa-calendar-check"></i> Events
                 </a>
@@ -215,7 +301,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/survey-responses}">
-                    <i class="fas fa-chart-pie"></i> Survey Responses
+                    <i class="fas fa-chart-pie"></i> Responses
                 </a>
             </li>
             <li class="nav-item">
@@ -228,59 +314,240 @@
 </nav>
 
 <div class="container">
-    <h2 class="header-title fade-in">Event Participation Report</h2>
-    <div class="card mb-5 fade-in">
+    <h2 class="fade-in"><i class="fas fa-tachometer-alt"></i>Admin Dashboard</h2>
+
+    <div class="row mb-3">
+        <div class="col-12 col-sm-6 col-md-4 mb-3 fade-in">
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <h3 th:text="${totalVoters}"></h3>
+                <p>Total Voters</p>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 mb-3 fade-in">
+            <div class="stat-card">
+                <i class="fas fa-hand-holding-heart"></i>
+                <h3 th:text="${totalWelfareBeneficiaries}"></h3>
+                <p>Welfare Beneficiaries</p>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 mb-3 fade-in">
+            <div class="stat-card">
+                <i class="fas fa-calendar-check"></i>
+                <h3 th:text="${totalEventParticipants}"></h3>
+                <p>Event Participants</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12 col-md-6 mb-3 fade-in">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie"></i>Age Distribution
+                </div>
+                <div class="card-body">
+                    <div class="canvas-container">
+                        <canvas id="ageChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 mb-3 fade-in">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar"></i>Employment Status
+                </div>
+                <div class="card-body">
+                    <div class="canvas-container">
+                        <canvas id="employmentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12 col-md-6 mb-3 fade-in">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie"></i>Welfare Categories
+                </div>
+                <div class="card-body">
+                    <div class="canvas-container">
+                        <canvas id="welfareChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 mb-3 fade-in">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar"></i>Event Participation
+                </div>
+                <div class="card-body">
+                    <div class="canvas-container">
+                        <canvas id="eventChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card fade-in">
         <div class="card-header">
-            <i class="fas fa-chart-bar me-2"></i>Participation by Event
+            <i class="fas fa-map"></i>Constituency Map
         </div>
         <div class="card-body">
-            <div class="canvas-container">
-                <canvas id="participationChart"></canvas>
+            <div class="map-container">
+                <svg class="constituency-map" viewBox="0 0 400 300">
+                    <path id="ward1" d="M50 50 L150 50 L150 150 L50 150 Z"
+                          th:attr="data-ward=${wardDistribution['Ward1'] != null ? 'Ward1 - Welfare: ' + wardDistribution['Ward1'] + ', Events: ' + (eventParticipationByWard['Ward1'] != null ? eventParticipationByWard['Ward1'] : 0) : 'Ward1 - Welfare: 0, Events: 0'}"/>
+                    <path id="ward2" d="M150 50 L250 50 L250 150 L150 150 Z"
+                          th:attr="data-ward=${wardDistribution['Ward2'] != null ? 'Ward2 - Welfare: ' + wardDistribution['Ward2'] + ', Events: ' + (eventParticipationByWard['Ward2'] != null ? eventParticipationByWard['Ward2'] : 0) : 'Ward2 - Welfare: 0, Events: 0'}"/>
+                    <path id="ward3" d="M50 150 L150 150 L150 250 L50 250 Z"
+                          th:attr="data-ward=${wardDistribution['Ward3'] != null ? 'Ward3 - Welfare: ' + wardDistribution['Ward3'] + ', Events: ' + (eventParticipationByWard['Ward3'] != null ? eventParticipationByWard['Ward3'] : 0) : 'Ward3 - Welfare: 0, Events: 0'}"/>
+                    <path id="ward4" d="M150 150 L250 150 L250 250 L150 250 Z"
+                          th:attr="data-ward=${wardDistribution['Ward4'] != null ? 'Ward4 - Welfare: ' + wardDistribution['Ward4'] + ', Events: ' + (eventParticipationByWard['Ward4'] != null ? eventParticipationByWard['Ward4'] : 0) : 'Ward4 - Welfare: 0, Events: 0'}"/>
+                </svg>
+                <div class="tooltip"></div>
             </div>
         </div>
     </div>
 </div>
 
 <footer class="fade-in">
-    Developed by wankeley-Dev
+    © 2025 Ayawaso West Constituency - NDC. All rights reserved.
 </footer>
 
-<script>
-    const ctx = document.getElementById('participationChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: /*[[${report.eventIds}]]*/.map(id => {
-                const event = /*[[${events}]]*/.find(e => e.id == id);
-                return event ? event.eventName : 'Unknown Event';
-            }),
-            datasets: [{
-                label: 'Participants',
-                data: /*[[${report.counts}]]*/,
-                backgroundColor: '#008000'
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: { y: { beginAtZero: true } },
-            plugins: {
-                legend: { position: 'top' },
-                title: { display: true, text: 'Event Participation Statistics' }
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        const paths = document.querySelectorAll('.constituency-map path');
+        const tooltip = document.querySelector('.tooltip');
+
+        paths.forEach(path => {
+            path.addEventListener('mouseenter', function(e) {
+                const wardData = this.getAttribute('data-ward');
+                tooltip.textContent = wardData;
+                tooltip.style.display = 'block';
+                const rect = this.getBoundingClientRect();
+                tooltip.style.left = (rect.left + window.scrollX + rect.width/2) + 'px';
+                tooltip.style.top = (rect.top + window.scrollY - 30) + 'px';
+            });
+
+            path.addEventListener('mouseleave', function() {
+                tooltip.style.display = 'none';
+            });
+        });
+
+        window.dashboardData = {
+            ageDistribution: /*[[${ageDistribution}]]*/ {},
+            employmentDistribution: /*[[${employmentDistribution}]]*/ {},
+            welfareCategoryDistribution: /*[[${welfareCategoryDistribution}]]*/ {},
+            eventParticipation: /*[[${eventParticipation}]]*/ {},
+            wardDistribution: /*[[${wardDistribution}]]*/ {},
+            eventParticipationByWard: /*[[${eventParticipationByWard}]]*/ {}
+        };
+
+        initializeCharts();
+
+        function handleViewport() {
+            let viewport = document.querySelector("meta[name=viewport]");
+            if (window.innerWidth <= 576) {
+                viewport.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no");
+            } else {
+                viewport.setAttribute("content", "width=device-width, initial-scale=1.0");
             }
         }
+        window.addEventListener('resize', handleViewport);
+        handleViewport();
     });
 
-    function handleViewport() {
-        let viewport = document.querySelector("meta[name=viewport]");
-        if (window.innerWidth <= 576) {
-            viewport.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no");
-        } else {
-            viewport.setAttribute("content", "width=device-width, initial-scale=1.0");
+    function initializeCharts() {
+        if (document.getElementById('ageChart')) {
+            new Chart(document.getElementById('ageChart').getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(dashboardData.ageDistribution),
+                    datasets: [{
+                        data: Object.values(dashboardData.ageDistribution),
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        }
+
+        if (document.getElementById('employmentChart')) {
+            new Chart(document.getElementById('employmentChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(dashboardData.employmentDistribution),
+                    datasets: [{
+                        label: 'Count',
+                        data: Object.values(dashboardData.employmentDistribution),
+                        backgroundColor: '#008000',
+                        borderColor: '#006400',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        if (document.getElementById('welfareChart')) {
+            new Chart(document.getElementById('welfareChart').getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(dashboardData.welfareCategoryDistribution),
+                    datasets: [{
+                        data: Object.values(dashboardData.welfareCategoryDistribution),
+                        backgroundColor: ['#008000', '#00AA00', '#00CC00', '#00EE00', '#AAFFAA'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        }
+
+        if (document.getElementById('eventChart')) {
+            new Chart(document.getElementById('eventChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(dashboardData.eventParticipation),
+                    datasets: [{
+                        label: 'Participants',
+                        data: Object.values(dashboardData.eventParticipation),
+                        backgroundColor: '#008000',
+                        borderColor: '#006400',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } },
+                    plugins: { legend: { display: false } }
+                }
+            });
         }
     }
-    window.addEventListener('resize', handleViewport);
-    handleViewport();
 </script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
