@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Analytics</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #e9f5e9;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        .navbar {
+            background-color: #2e7d32;
+            padding: 10px 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1.3rem;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            width: 40px;
+            margin-right: 8px;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: #ffffff !important;
+            padding: 8px 12px !important;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            font-size: 0.95rem;
+            min-width: 48px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px 0;
+        }
+
+        .navbar-dark .navbar-nav .nav-link:hover {
+            background: rgba(255, 202, 40, 0.2); /* Yellow hover with transparency */
+            color: #ffca28;
+        }
+
+        .navbar-dark .navbar-nav .nav-link i {
+            margin-right: 6px;
+            font-size: 0.9em;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 60px auto 20px;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .survey-header {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 15px;
+        }
+
+        .survey-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .question-block {
+            border: 2px solid #81c784;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            background-color: #f1f8e9;
+            position: relative;
+            transition: transform 0.2s ease;
+        }
+
+        .question-block:hover {
+            transform: translateY(-2px);
+        }
+
+        .question-block h3 {
+            color: #2e7d32;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .data-label {
+            color: #ff5722;
+            font-weight: bold;
+        }
+
+        .analytics p {
+            margin: 4px 0;
+            font-size: 0.95rem;
+        }
+
+        .analytics ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .analytics ul li {
+            background-color: #dcedc8;
+            padding: 6px;
+            margin: 4px 0;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile-first with responsive adjustments */
+        @media (min-width: 768px) {
+            .navbar { padding: 15px 20px; }
+            .container { margin-top: 80px; padding: 20px; }
+            .survey-header { padding: 15px; }
+            .survey-header h1 { font-size: 2.5rem; }
+            .question-block { padding: 15px; margin-bottom: 20px; }
+            .question-block h3 { font-size: 1.3rem; }
+            .analytics p { font-size: 1rem; }
+            .analytics ul li { padding: 8px; font-size: 0.95rem; }
+        }
+
+        @media (max-width: 991px) {
+            .navbar-nav {
+                text-align: center;
+                padding-top: 10px;
+                gap: 5px;
+            }
+            .nav-link {
+                padding: 10px 15px !important;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-brand { font-size: 1.2rem; }
+            .navbar-brand img { height: 35px; width: 35px; }
+            .survey-header h1 { font-size: 1.5rem; margin-bottom: 6px; }
+            .question-block { padding: 10px; }
+            .question-block h3 { font-size: 1.1rem; }
+            .analytics ul li { padding: 5px; font-size: 0.85rem; }
+        }
+
+        @media (max-width: 576px) {
+            .navbar { padding: 8px 12px; }
+            .nav-link { font-size: 0.9rem; padding: 6px 10px !important; }
+            .survey-header { padding: 10px; }
+            .survey-header h1 { font-size: 1.3rem; }
+            .analytics p { font-size: 0.9rem; }
+            .analytics ul li { font-size: 0.8rem; }
+        }
+
+        @media (max-width: 400px) {
+            .navbar-brand { font-size: 1.1rem; }
+            .navbar-brand img { height: 30px; width: 30px; }
+            .survey-header h1 { font-size: 1.2rem; }
+            .question-block h3 { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" th:href="@{/admin-dashboard}">
+    <img src="/Images/NDC-L.png" alt="NDC Logo"> Ayawaso West
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/users}">
+          <i class="fas fa-user-friends"></i> Users
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/voterInput/view}">
+          <i class="fas fa-users"></i> Voters
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/welfareInput/view}">
+          <i class="fas fa-hand-holding-heart"></i> Welfare
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/issues/viewIssues}">
+          <i class="fas fa-bullhorn"></i> Issues
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/events}">
+          <i class="fas fa-calendar-check"></i> Events
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/surveys}">
+          <i class="fas fa-poll"></i> Survey
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/participation/view}">
+          <i class="fas fa-user-check"></i> Participation
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/survey-responses}">
+          <i class="fas fa-chart-pie"></i> Survey Responses
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="survey-header">
+    <h1 th:text="${survey.title}">Survey Title</h1>
+    <p th:text="${survey.description}">Survey Description</p>
+    <p>Status: <span th:text="${survey.status}">N/A</span></p>
+    <p>Start Date: <span th:text="${survey.startDate}">N/A</span></p>
+    <p>End Date: <span th:text="${survey.endDate}">N/A</span></p>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-md-6" th:each="question : ${survey.questions}">
+      <div class="question-block">
+        <h3 th:text="${question.questionText}">Question Text</h3>
+        <p>Type: <span th:text="${question.type}">N/A</span></p>
+        <p class="options" th:if="${question.options != null}">
+          Options: <span th:text="${question.options}">N/A</span>
+        </p>
+        <p>Required: <span th:text="${question.required ? 'Yes' : 'No'}">No</span></p>
+
+        <div th:with="questionResponses=${responses.?[question.id == __${question.id}__]}">
+          <div class="analytics">
+            <p>Question ID: <span class="data-label" th:text="${question.id}">N/A</span></p>
+            <p th:if="${questionResponses != null and questionResponses.?[rating != null].size() > 0}">
+              Average Rating:
+              <span class="data-label" th:text="${#aggregates.avg(questionResponses.?[rating != null].rating)}">N/A</span>
+              (out of 5)
+            </p>
+            <p>Total Responses: <span class="data-label" th:text="${questionResponses != null ? questionResponses.size() : 0}">0</span></p>
+            <div th:if="${questionResponses != null and questionResponses.?[responseText != null].size() > 0}">
+              <h4>Text Responses:</h4>
+              <ul>
+                <li th:each="response : ${questionResponses}"
+                    th:text="${response.responseText}"
+                    th:if="${response.responseText != null}">
+                  Response Text
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

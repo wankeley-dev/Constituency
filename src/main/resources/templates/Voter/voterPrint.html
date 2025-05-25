@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Voters - Ayawaso West</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f0f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .print-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header-text {
+            color: #008000;
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #008000;
+            color: white;
+            font-weight: 500;
+        }
+
+        td {
+            color: #333;
+        }
+
+        .btn-custom {
+            background: #008000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .btn-custom:hover {
+            background: #006400;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+            body {
+                background: none;
+                padding: 0;
+            }
+            .print-container {
+                box-shadow: none;
+                border: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="print-container">
+    <h1 class="header-text"><i class="fas fa-users"></i> Voter List</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Voter ID</th>
+            <th>Age</th>
+            <th>Occupation</th>
+            <th>Branch</th>
+            <th>Phone</th>
+            <th>Gender</th>
+            <th>Address</th>
+            <th>Polling Station</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="voter : ${voters}">
+            <td th:text="${voter.id}"></td>
+            <td th:text="${voter.fullName}"></td>
+            <td th:text="${voter.voterId}"></td>
+            <td th:text="${voter.age}"></td>
+            <td th:text="${voter.occupation}"></td>
+            <td th:text="${voter.branch}"></td>
+            <td th:text="${voter.phone}"></td>
+            <td th:text="${voter.gender}"></td>
+            <td th:text="${voter.address}"></td>
+            <td th:text="${voter.pollingStation}"></td>
+            <td th:text="${voter.active ? 'Active' : 'Inactive'}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <button class="btn btn-custom no-print" onclick="window.print()">
+        <i class="fas fa-print"></i> Print
+    </button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

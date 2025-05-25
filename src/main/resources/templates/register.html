@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Ayawaso West Portal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f0f0;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .register-wrapper {
+            display: flex;
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background: #008000;
+            color: white;
+            padding: 30px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sidebar img {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar h1 {
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .sidebar h3 {
+            font-size: 1.1em;
+            font-weight: 300;
+            text-align: center;
+        }
+
+        .register-container {
+            padding: 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .register-container h2 {
+            color: #008000;
+            font-size: 2em;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .form-control, .form-select {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px 12px 12px 40px;
+            font-size: 1em;
+            width: 100%;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #008000;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 128, 0, 0.2);
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #008000;
+        }
+
+        .btn-register {
+            background: #008000;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 500;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        .btn-register:hover {
+            background: #006400;
+        }
+
+        .alert {
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .login-link {
+            color: #008000;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .login-link:hover {
+            color: #006400;
+            text-decoration: underline;
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .register-wrapper {
+                flex-direction: column;
+                margin: 20px;
+            }
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+            .sidebar img {
+                max-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="register-wrapper">
+    <div class="sidebar">
+        <img src="Images/NDC-L.png" alt="NDC Logo" class="img-fluid">
+        <h1>Welcome</h1>
+        <h3>Ayawaso Wougon<br>Management System</h3>
+    </div>
+    <div class="register-container">
+        <h2><i class="fas fa-user-plus"></i> Register</h2>
+
+        <div th:if="${errorMessage}" class="alert alert-danger text-center" th:text="${errorMessage}"></div>
+        <div th:if="${successMessage}" class="alert alert-success text-center" th:text="${successMessage}"></div>
+
+        <form id="registerForm" th:action="@{/register}" th:object="${user}" method="post">
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <input type="text" class="form-control" id="fullName" th:field="*{fullName}" placeholder="Full Name" required>
+                <div th:errors="*{fullName}" class="text-danger"></div>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Email" required>
+                <div th:errors="*{email}" class="text-danger"></div>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Password" required>
+                <div th:errors="*{password}" class="text-danger"></div>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-user-tag"></i>
+                <select class="form-control" id="role" th:field="*{role}" required>
+                    <option value="" disabled selected>Select Role</option>
+                    <option th:each="role : ${T(com.example.Learn.LearnOne.Entity.Users.Role).values()}" th:value="${role}" th:text="${role}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn-register"><i class="fas fa-save me-2"></i>Register</button>
+        </form>
+        <p class="text-center mt-3">Already have an account? <a th:href="@{/login}" class="login-link">Login here</a></p>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

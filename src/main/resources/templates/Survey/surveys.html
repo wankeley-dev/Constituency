@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surveys Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f0f0;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        .navbar {
+            background: #008000;
+            padding: 10px 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.3rem;
+        }
+
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+            margin-right: 8px;
+        }
+
+        .nav-link {
+            color: white !important;
+            padding: 8px 12px !important;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            font-size: 0.95rem;
+            min-width: 48px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px 0;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-link i {
+            margin-right: 6px;
+            font-size: 0.9em;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 60px auto 20px;
+            padding: 15px;
+        }
+
+        .header-title {
+            font-weight: 600;
+            color: #008000;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            background: white;
+            overflow: hidden;
+            margin-bottom: 15px;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            background: #008000;
+            color: white;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header i.toggle-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .card-header.collapsed i.toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .form-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .form-content.show {
+            max-height: 700px;
+            opacity: 1;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #008000;
+            box-shadow: 0 0 5px rgba(0, 128, 0, 0.5);
+        }
+
+        .btn-primary {
+            background: #008000;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary:hover {
+            background: #006400;
+            transform: scale(1.05);
+        }
+
+        .survey-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .survey-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .survey-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #008000;
+            transition: width 0.2s ease;
+        }
+
+        .survey-card:hover::before {
+            width: 8px;
+        }
+
+        h5 {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .text-muted {
+            color: #666 !important;
+            font-size: 0.95rem;
+        }
+
+        .badge {
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .bg-secondary {
+            background-color: #006400 !important;
+        }
+
+        .bg-info {
+            background-color: #008000 !important;
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            transition: transform 0.2s ease, background 0.3s ease;
+            background: #008000;
+            border: none;
+            color: white;
+            margin: 2px;
+        }
+
+        .btn-action:hover {
+            transform: scale(1.05);
+            background: #006400;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .modal-content {
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            background: #008000;
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Mobile-first with responsive adjustments */
+        @media (min-width: 768px) {
+            .navbar { padding: 15px 20px; }
+            .container { margin-top: 80px; padding: 20px; }
+            .header-title { font-size: 2.5rem; }
+            .card-header { padding: 15px; }
+            .card-body { padding: 20px; }
+            .survey-card { padding: 20px; margin-bottom: 20px; }
+            h5 { font-size: 1.3rem; }
+            .badge { font-size: 0.9rem; padding: 5px 10px; }
+            .btn-primary { padding: 10px 20px; font-size: 1rem; }
+            .btn-action { padding: 8px 15px; font-size: 1rem; }
+            .form-control, .form-select { font-size: 1rem; }
+        }
+
+        @media (max-width: 991px) {
+            .navbar-nav {
+                text-align: center;
+                padding-top: 10px;
+                gap: 5px;
+            }
+            .nav-link {
+                padding: 10px 15px !important;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-brand { font-size: 1.2rem; }
+            .navbar-brand img { width: 35px; height: 35px; }
+            .header-title { font-size: 1.5rem; margin-bottom: 15px; }
+            .survey-card { padding: 12px; }
+            .btn-action { padding: 5px 10px; font-size: 0.8rem; }
+            .d-flex { flex-direction: column; align-items: stretch !important; gap: 10px; }
+            .form-content.show { max-height: 800px; }
+            .modal-dialog { margin: 1rem; }
+        }
+
+        @media (max-width: 576px) {
+            .navbar { padding: 8px 12px; }
+            .nav-link { font-size: 0.9rem; padding: 6px 10px !important; }
+            .header-title { font-size: 1.3rem; }
+            .badge { font-size: 0.75rem; padding: 3px 6px; }
+            .text-muted { font-size: 0.9rem; }
+            .form-control, .form-select { font-size: 0.9rem; }
+        }
+
+        @media (max-width: 400px) {
+            .navbar-brand { font-size: 1.1rem; }
+            .navbar-brand img { width: 30px; height: 30px; }
+            .header-title { font-size: 1.2rem; }
+            h5 { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" th:href="@{/admin-dashboard}">
+        <img src="Images/NDC-L.png" alt="NDC Logo"> Ayawaso West
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/users}">
+                    <i class="fas fa-user-friends"></i> Users
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/voterInput/view}">
+                    <i class="fas fa-users"></i> Voters
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/welfareInput/view}">
+                    <i class="fas fa-hand-holding-heart"></i> Welfare
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/issues/viewIssues}">
+                    <i class="fas fa-bullhorn"></i> Issues
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/events}">
+                    <i class="fas fa-calendar-check"></i> Events
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/surveys}">
+                    <i class="fas fa-poll"></i> Survey
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/participation/view}">
+                    <i class="fas fa-user-check"></i> Participation
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/survey-responses}">
+                    <i class="fas fa-chart-pie"></i> Survey Responses
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h2 class="header-title text-center fade-in">Surveys Management</h2>
+
+    <!-- Add Survey Form with Toggle -->
+    <div class="card mb-5 fade-in">
+        <div class="card-header" id="toggleForm">
+            <span><i class="fas fa-poll me-2"></i> Create New Survey</span>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="card-body form-content" id="formContent">
+            <form th:action="@{/surveys/add}" th:object="${survey}" method="post">
+                <input type="hidden" th:field="*{id}">
+                <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                        <label for="title" class="form-label"><i class="fas fa-heading me-2"></i>Title:</label>
+                        <input type="text" th:field="*{title}" id="title" name="title" class="form-control" required>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="status" class="form-label"><i class="fas fa-toggle-on me-2"></i>Status:</label>
+                        <select th:field="*{status}" id="status" name="status" class="form-select">
+                            <option th:each="stat : ${statuses}" th:value="${stat}" th:text="${stat}"></option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label for="description" class="form-label"><i class="fas fa-comment-alt me-2"></i>Description:</label>
+                        <textarea th:field="*{description}" id="description" name="description" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="startDate" class="form-label"><i class="fas fa-calendar-alt me-2"></i>Start Date:</label>
+                        <input type="datetime-local" th:field="*{startDate}" id="startDate" name="startDate" class="form-control">
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="endDate" class="form-label"><i class="fas fa-calendar-times me-2"></i>End Date:</label>
+                        <input type="datetime-local" th:field="*{endDate}" id="endDate" name="endDate" class="form-control">
+                    </div>
+                    <div class="col-12 mt-4">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-plus me-2"></i>Create Survey
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Filter/Search Section -->
+    <div class="card mb-5 fade-in">
+        <div class="card-header">
+            <i class="fas fa-filter me-2"></i> Filter Surveys
+        </div>
+        <div class="card-body">
+            <form action="/surveys" method="get">
+                <div class="row g-3">
+                    <div class="col-12 col-md-4">
+                        <input type="text" name="title" class="form-control" placeholder="Survey Title" th:value="${title}">
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <select name="status" class="form-select">
+                            <option value="">All Statuses</option>
+                            <option th:each="stat : ${statuses}" th:value="${stat}" th:text="${stat}" th:selected="${stat == status}"></option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <input type="text" name="keyword" class="form-control" placeholder="Search Keyword" th:value="${keyword}">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search me-2"></i>Filter/Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Existing Surveys Section -->
+    <h4 class="mb-4 fade-in"><i class="fas fa-poll-h me-2"></i>Surveys</h4>
+    <div class="row">
+        <div class="col-12 col-md-6" th:each="survey : ${surveys}">
+            <div class="survey-card fade-in">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="me-3">
+                        <h5><i class="fas fa-poll me-2"></i><span th:text="${survey.title}">Survey Title</span></h5>
+                        <p class="text-muted mb-2" th:text="${survey.description ?: 'No description'}">Description</p>
+                        <div class="d-flex flex-column flex-md-row flex-wrap gap-2 gap-md-3">
+                            <span class="badge me-2" th:classappend="${survey.status == 'DRAFT' ? 'bg-draft' : survey.status == 'ACTIVE' ? 'bg-active' : 'bg-closed'}" th:text="${survey.status}"></span>
+                            <span class="badge bg-secondary" th:text="${#temporals.format(survey.startDate, 'MMM dd, yyyy HH:mm')}"></span>
+                            <span class="badge bg-info" th:text="${survey.endDate != null ? #temporals.format(survey.endDate, 'MMM dd, yyyy HH:mm') : 'No end date'}"></span>
+                        </div>
+                        <small class="text-muted d-block mt-2">
+                            <i class="fas fa-question-circle me-1"></i>Questions: <span th:text="${survey.questions.size()}">0</span>
+                        </small>
+                        <ul th:if="${survey.questions.size() > 0}">
+                            <li th:each="question : ${survey.questions}" th:text="${question.questionText}"></li>
+                        </ul>
+                    </div>
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        <button class="btn btn-action me-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#addQuestionModal"
+                                th:data-survey-id="${survey.id}">
+                            <i class="fas fa-plus-circle"></i> Add Question
+                        </button>
+                        <a class="btn btn-danger btn-action" th:href="@{'/surveys/delete/' + ${survey.id}}"
+                           onclick="return confirm('Are you sure you want to delete this survey?');">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Question Modal -->
+<div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addQuestionModalLabel"><i class="fas fa-question-circle me-2"></i>Add Question</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{'/surveys/' + ${surveyId} + '/add-question'}" th:object="${question}" method="post" id="questionForm">
+                    <input type="hidden" name="surveyId" th:value="${surveyId}" id="surveyId">
+                    <div class="mb-3">
+                        <label for="questionText" class="form-label">Question Text:</label>
+                        <input type="text" th:field="*{questionText}" id="questionText" name="questionText" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="type" class="form-label">Question Type:</label>
+                        <select th:field="*{type}" id="type" name="type" class="form-select" required>
+                            <option value="TEXT">Text</option>
+                            <option value="MULTIPLE_CHOICE">Multiple Choice</option>
+                            <option value="RATING">Rating</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="optionsField" style="display: none;">
+                        <label for="options" class="form-label">Options (comma-separated):</label>
+                        <input type="text" th:field="*{options}" id="options" name="options" class="form-control" placeholder="e.g., Yes, No, Maybe">
+                    </div>
+                    <div class="form-check mb-3">
+                        <input type="checkbox" th:field="*{required}" id="required" name="required" class="form-check-input">
+                        <label for="required" class="form-check-label">Required</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-plus me-2"></i>Add Question
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleButton = document.getElementById('toggleForm');
+        const formContent = document.getElementById('formContent');
+        toggleButton.addEventListener('click', function () {
+            formContent.classList.toggle('show');
+            toggleButton.classList.toggle('collapsed');
+        });
+
+        const addQuestionButtons = document.querySelectorAll('[data-bs-target="#addQuestionModal"]');
+        addQuestionButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const surveyId = this.getAttribute('data-survey-id');
+                document.getElementById('surveyId').value = surveyId;
+                document.getElementById('questionForm').action = `/surveys/${surveyId}/add-question`;
+            });
+        });
+
+        const typeSelect = document.getElementById('type');
+        const optionsField = document.getElementById('optionsField');
+        typeSelect.addEventListener('change', function () {
+            optionsField.style.display = this.value === 'MULTIPLE_CHOICE' ? 'block' : 'none';
+        });
+    });
+</script>
+</body>
+</html>
